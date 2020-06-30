@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/bcprov-jdk15on-1.65.01.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/hibernate-types-52-2.9.11.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jackson-annotations-2.8.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jackson-core-2.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jackson-databind-2.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/javax.json.bind-api-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jjwt-api-0.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jjwt-impl-0.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/jjwt-jackson-0.11.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
