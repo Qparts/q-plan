@@ -4,7 +4,6 @@ import q.rest.plan.dao.DAO;
 import q.rest.plan.filter.annotation.InternalApp;
 import q.rest.plan.filter.annotation.Jwt;
 import q.rest.plan.filter.annotation.UserJwt;
-import q.rest.plan.filter.annotation.ValidApp;
 import q.rest.plan.helper.Helper;
 import q.rest.plan.model.entity.Plan;
 import q.rest.plan.model.entity.PlanDuration;
@@ -39,9 +38,7 @@ public class ApiV1 {
     public Response getPlans(){
         try{
             List<Plan> plans = dao.get(Plan.class);
-            for(Plan plan : plans){
-                initPlan(plan);
-            }
+            plans.forEach(this::initPlan);
             return Response.status(200).entity(plans).build();
         }catch (Exception ex){
             return Response.status(500).build();
