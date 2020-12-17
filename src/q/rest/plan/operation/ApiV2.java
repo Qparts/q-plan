@@ -14,10 +14,7 @@ import q.rest.plan.model.entity.PlanPromotion;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,17 +46,16 @@ public class ApiV2 {
 
     @GET
     @Path("promo-code")
-    @Jwt
-    public Response checkPromoCode(@Context UriInfo info) {
+    @SubscriberJwt
+    public Response checkPromoCode(@HeaderParam(HttpHeaders.AUTHORIZATION) String header, @Context UriInfo info) {
         String code = info.getQueryParameters().getFirst("code");
         String planString = info.getQueryParameters().getFirst("plan");
         String durationString = info.getQueryParameters().getFirst("duration");
-        String companyString = info.getQueryParameters().getFirst("company");
+        int companyId = Helper.getCompanyFromJWT(header);
         verifyPromoCode(code, planString, durationString);
         int plan = Integer.parseInt(planString);
         int duration = Integer.parseInt(durationString);
         code = code.toUpperCase();
-
         String sql = "select b from PlanPromotion b where " +
                 " b.promoCode = :value0 " +
                 " and b.durationId = :value1 " +
@@ -68,13 +64,13 @@ public class ApiV2 {
                 " and b.endDate >= :value4 ";
         PlanPromotion planPromotion = dao.findJPQLParams(PlanPromotion.class, sql, code, duration, plan, 'A', new Date());
         if (planPromotion == null) throwError(404, null);
-        verifyPlanSpecific(planPromotion, companyString);
+        verifyPlanSpecific(planPromotion, companyId);
         PublicPlanPromotion ppp = dao.find(PublicPlanPromotion.class, planPromotion.getId());
         return Response.status(200).entity(ppp).build();
     }
 
-    private void verifyPlanSpecific(PlanPromotion prom, String company) {
-        if (company != null && prom.isSpecific() && prom.getCompanyId() != Integer.parseInt(company)) {
+    private void verifyPlanSpecific(PlanPromotion prom, int companyId) {
+        if (companyId != 0 && prom.isSpecific() && prom.getCompanyId() != companyId) {
             throwError(404);
         }
     }

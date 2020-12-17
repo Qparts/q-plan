@@ -1,5 +1,8 @@
 package q.rest.plan.helper;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -161,6 +164,12 @@ public class Helper {
     public String getDateFormat(Date date, String pattern){
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(date);
+    }
+
+    public static int getCompanyFromJWT(String header) {
+        String token = header.substring("Bearer".length()).trim();
+        Claims claims = Jwts.parserBuilder().setSigningKey(KeyConstant.PUBLIC_KEY).build().parseClaimsJws(token).getBody();
+        return Integer.parseInt(claims.get("comp").toString());
     }
 
 
