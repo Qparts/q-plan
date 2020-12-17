@@ -52,7 +52,9 @@ public class ApiV2 {
         String planString = info.getQueryParameters().getFirst("plan");
         String durationString = info.getQueryParameters().getFirst("duration");
         int companyId = Helper.getCompanyFromJWT(header);
+        System.out.println("verifying promocode");
         verifyPromoCode(code, planString, durationString);
+        System.out.println("promocode verirfied");
         int plan = Integer.parseInt(planString);
         int duration = Integer.parseInt(durationString);
         code = code.toUpperCase();
@@ -62,10 +64,15 @@ public class ApiV2 {
                 " and b.planId = :value2 " +
                 " and b.status = :value3 " +
                 " and b.endDate >= :value4 ";
+        System.out.println("sql " + sql);
         PlanPromotion planPromotion = dao.findJPQLParams(PlanPromotion.class, sql, code, duration, plan, 'A', new Date());
+        System.out.println("from dao ");
         if (planPromotion == null) throwError(404, null);
+        System.out.println("verifying specific ");
         verifyPlanSpecific(planPromotion, companyId);
+        System.out.println("ok ");
         PublicPlanPromotion ppp = dao.find(PublicPlanPromotion.class, planPromotion.getId());
+        System.out.println("returning promotion ");
         return Response.status(200).entity(ppp).build();
     }
 
