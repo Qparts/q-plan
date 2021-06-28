@@ -34,7 +34,6 @@ public class ApiV2 {
 
     @GET
     @Path("plans")
-    @SubscriberJwt
     public Response getPlans(){
         try{
             List<PublicPlan> plans = dao.getCondition(PublicPlan.class, "status", 'A');
